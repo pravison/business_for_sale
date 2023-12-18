@@ -101,7 +101,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.parse(
-        env('POSTGRES_URL'),
+        env('psql'),
         conn_max_age=600,
         conn_health_checks=True,
         engine='django.db.backends.postgresql_psycopg2'

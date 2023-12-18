@@ -1,5 +1,6 @@
 asgiref==3.7.2
 bleach==6.1.0
+dj-database-url==2.1.0
 Django==4.2.6
 django-cors-headers==4.3.0
 django-environ==0.11.2
