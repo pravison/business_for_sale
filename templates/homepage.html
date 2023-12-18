@@ -1,0 +1,146 @@
+{% extends "main.html"%}
+{% load static %}
+{% block title%} Homepage {%endblock title%}
+{% block content %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+
+        {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error : {{ message }}
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    Success : {{ message }}
+                {% else %}
+                    {{ message.tags | title }}
+                {% endif %}
+                {{ message. }}
+            </strong>
+            </div>
+                
+            {% endfor %}
+        {% endif %}
+
+        {%for info in infos %}
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">{{info.pitch}}</h1>
+          <h2 data-aos="fade-up" data-aos-delay="400">{{info.tagline}}</h2>
+        </div>
+        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+          <img src="{{info.imageURL}}" class="img-fluid" alt="">
+        </div>
+        {%endfor%}
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <!-- ======= Recent business Section ======= -->
+<section id="recent-blog-posts" class="recent-blog-posts">
+
+  <div class="container" data-aos="fade-up">
+
+    <header class="section-header">
+      <h2>Businesses</h2>
+      <p>Featured Businesses</p>
+    </header>
+
+    <div class="row">
+      {% for biz in businesses %}
+      <div class="col-lg-4">
+        <div class="post-box">
+          <div class="post-img"><img src="{{ biz.imageURL}}" class="img-fluid" alt=""></div>
+          <h3 class="post-title">{{biz.title}}</h3>
+          <span class="post-date">{{biz.location}}, {{biz.county}}-{{biz.country}}</span>
+          <hr>
+          <p>Asking Price : <strong>ksh{{biz.asking_price}}</strong></p>
+          <p>Annual Revenue: <strong>ksh{{biz.gross_annual_revenue}}</strong></p>
+          <p>Cashflow : <strong>ksh{{biz.cashflow}}</strong></p>
+          <hr>
+          <p>industry : {{biz.industry.name}}</p> 
+          <p>category: {{biz.category.name}}</p>
+          <hr>
+          <a href="{% url 'biz_single' biz.id %}" class="readmore stretched-link mt-auto"><span>Find Out More</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</section><!-- End business Section -->
+
+<!-- ======= Recent RealEstate Section ======= -->
+<section id="recent-blog-posts" class="recent-blog-posts">
+
+  <div class="container" data-aos="fade-up">
+
+    <header class="section-header">
+      <h2>RealEstate</h2>
+      <p>Featured Commercial RealEstates</p>
+    </header>
+
+    <div class="row">
+      {% for realestate in realestates %}
+      <div class="col-lg-4">
+        <div class="post-box">
+          <div class="post-img"><img src="{{ realestate.imageURL}}" class="img-fluid" alt=""></div>
+          <h3 class="post-title">{{realestate.title}}</h3>
+          <hr>
+            <p>Property Name: <strong>{{realestate.property_name}}</strong></p>
+            <p>Asking Price:   ksh<strong>{{realestate.asking_price}}</strong></p>
+            <p>Listed By : <strong>{{realestate.listed_by.are_you}}</strong></p>
+            <hr>
+            <p>Average Monthly Income:   ksh<strong>{{realestate.average_montly_rental_income}}</strong></p>
+            <p>Total Rooms:   <strong>{{realestate.total_rooms}}</strong></p>
+            <p>Current Occupied Rooms:   <strong>{{realestate.current_occupied_rooms}}</strong></p>
+          <hr>
+          <a href="{% url 'realestate_single' realestate.id %}" class="readmore stretched-link mt-auto"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</section><!-- End realestate Section -->
+
+<!-- ======= Recent blog Section ======= -->
+<section id="recent-blog-posts" class="recent-blog-posts">
+
+  <div class="container" data-aos="fade-up">
+
+    <header class="section-header">
+      <h2>blog</h2>
+      <p>Recent Blog Posts</p>
+    </header>
+
+    <div class="row">
+      {% for blog in blogs %}
+      <div class="col-lg-4">
+        <div class="post-box">
+          <div class="post-img"><img src="{{blog.imageURL}}" class="img-fluid" alt=""></div>
+          <span class="post-date">{{blog.dateUpdated}}</span>
+          <h3 class="post-title">{{blog.title}}</h3>
+          <a href="{% url 'blog_single' blog.id %}" class="readmore stretched-link mt-auto"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      {%endfor%}
+
+    </div>
+
+  </div>
+
+</section><!-- End  Section -->
+
+{% endblock %}

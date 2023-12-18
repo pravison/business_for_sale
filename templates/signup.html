@@ -1,0 +1,81 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title%} Register {%endblock title%}
+{%block content %}
+<main>
+   <!-- ======= Contact Section ======= -->
+   <section id="contact" class="contact">
+
+    <div class="container" data-aos="fade-up">
+
+      <header class="section-header">
+        <h2>Register</h2>
+        <p>Register</p>
+      </header>
+
+      <div class=" row gy-4 ">
+
+        <div class="col-lg-12 ">
+          <form action="{% url 'signup' %}" method="post" >
+            {% csrf_token %}
+                <div class="row gy-4">
+                <div class="col-md-12">
+                    <input type="text" class="form-control" name="name" placeholder="Your Full Name" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="username" class="form-control" placeholder="Your UserName" required>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="col-sm-12">
+                      <select class="form-select" name="are_you" aria-label="Default select example" >
+                        <option selected>Who are You</option>
+                        <option value="agent">agent</option>
+                        <option value="owner">owner</option>
+                        <option value="buyer">buyer</option>
+                      </select>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6 ">
+                    <input type="text" class="form-control" name="phone" placeholder="Your Phone Number" required>
+                </div>
+
+                <div class="col-md-6 ">
+                    <input type="email" class="form-control" name="email" placeholder="Your Email">
+                </div>
+                <div class="col-md-6 ">
+                    <input type="password" class="form-control" name="password1" placeholder="Your Password">
+                </div>
+                <div class="col-md-6 ">
+                    <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <button type="submit" id="submit" class="btn btn-primary">Register</button>
+                  </div>
+
+                  <div class="col-md-12 spinner-border text-center text-primary visually-hidden" id="loading" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section><!-- End Contact Section --> 
+</main>
+{% comment %} <script type="text/javascript">
+  
+  document.getElementById('submit').addEventListener('click', function(e){
+    document.getElementById('submit').classList.add("visually-hidden");
+    document.getElementById('loading').classList.remove("visually-hidden");
+    document.getElementById('loadingText').classList.remove("visually-hidden");
+    })
+</script> {% endcomment %}
+
+{%endblock%}

@@ -1,0 +1,172 @@
+{% extends "main.html"%}
+{% load static %}
+{% block title%} Business For Sale  {% endblock title %}
+{% block content %}
+
+<main id="main" >
+
+  <section class="breadcrumbs">
+    <div class="container mt-2">
+
+      <ol>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li>Businesses</li>
+      </ol>
+      <h2>Businesses</h2>
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <!-- ======= Blog Section ======= -->
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+        {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error : {{ message }}
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    Success : {{ message }}
+                {% else %}
+                    {{ message.tags | title }}
+                {% endif %}
+                {{ message. }}
+            </strong>
+            </div>
+                
+            {% endfor %}
+        {% endif %}
+        <header class="section-header">
+          <p>Find Your Next Business Opportunity</p>
+        </header>
+        
+
+        <div class="col-lg-4">
+
+          <div class="sidebar">
+
+            <h3 class="sidebar-title">Search</h3>
+            <div class="sidebar-item search-form">
+              <form action="{% url 'biz' %}">
+                <input type="text" name="query">
+                <button type="submit"><i class="bi bi-search"></i></button>
+              </form>
+            </div><!-- End sidebar search formn-->
+            <div class="flex" style="justify-content: space-between">
+            <div class="sidebar-item categories dropdown "><a href="#"><span class="sidebar-title"> <i class="bi bi-folder"></i> Categories</span> <i class="bi bi-chevron-down"></i></a>
+              <ul>
+                {%for category in categories %}
+                <li id = "category"><a href="{% url 'biz' %}?query={{ query }}&category={{category.id}}">{{category.name}} <span>({{category.businesse_set.count}})</span></a></li>
+                {%endfor%}
+              </ul>
+            </div>
+            <div class="sidebar-item categories dropdown"><a href="#"><span class="sidebar-title"> <i class="bi bi-grid"></i> Industries</span> <i class="bi bi-chevron-down"></i></a>
+              <ul>
+                {% for industry in industries %}
+                <li id = "industry"><a href="{% url 'biz' %}?query={{ query }}&industry={{industry.id}}">{{ industry.name }} <span>({{industry.businesse_set.count}})</span></a></li>
+                {% endfor %}
+              </ul>
+            </div><!-- End sidebar categories-->
+            </div>
+          </div><!-- End sidebar -->
+
+        </div><!-- End blog sidebar -->
+
+        <div class="col-lg-8 entries">
+          {% for biz in businesses %}
+          <article class="entry">
+            
+            <div class="entry-img">
+              <img src="{{ biz.imageURL}}" alt="" class="img-fluid">
+            </div>
+
+            <h2 class="entry-title">
+              <a href="{% url 'biz_single' biz.id %}">{{biz.title}}</a>
+            </h2>
+            <div class="entry-meta">
+              <span class="post-date">{{biz.location}}, {{biz.county}}-{{biz.country}}</span>
+            </div>
+
+            <hr>
+            <p>Asking Price : <strong>ksh{{biz.asking_price}}</strong></p>
+            <p>Annual Revenue: <strong>ksh{{biz.gross_annual_revenue}}</strong></p>
+            <p>Cashflow : <strong>ksh{{biz.cashflow}}</strong></p>
+            <hr>
+            <p>industry : {{biz.industry.name}}</p> 
+            <p>category: {{biz.category.name}}</p>
+            <hr>
+
+            <div class="entry-content">
+              <h6>
+                    <strong>
+                        Business Description
+                    </strong>
+                </h6>
+                <div>
+                {{biz.description|truncatechars:255}}
+                </div>
+              <div class="entry-footer">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  
+                  <li><a href="{% url 'biz' %}?query={{ query }}&category={{biz.category.id}}" title="category">{{biz.category.name}}</a></li>
+                  
+                </ul>
+              </div>
+              <div class="read-more">
+                <a href="{% url 'biz_single' biz.id %}">Find Out More</a>
+              </div>
+            </div>
+          
+          </article><!-- End blog entry -->
+          {% endfor %}
+
+          <!-- paginator -->
+          <div class="row">
+            <div class="col-md-12 ">
+              {% if businesses.has_other_pages %}
+                <ul class="pagination justify-content-center blog-pagination">
+                  {% if businesses.has_previous %}
+                    <a href="?page={{businesses.previous_page_number}}" class="page-link">&laquo;</a>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link">&laquo;</a>
+                    </li>
+                  {% endif %}
+                  {% for i in businesses.paginator.page_range %}
+                    {% if businesses.number == i %}
+                      <li class="page-item active">
+                        <a class="page-link">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a href="?page={{i}}" class="page-link">{{ i }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if businesses.has_next %}
+                    <a href="?page={{ businesses.next_page_number }}" class="page-link">&raquo;</a>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link">&raquo;</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+
+        </div><!-- End blog entries list -->
+
+      </div>
+
+    </div>
+  </section><!-- End Blog Section -->
+
+</main><!-- End #main -->
+
+{% endblock %}

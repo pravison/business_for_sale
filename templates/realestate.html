@@ -1,0 +1,168 @@
+{% extends "main.html"%}
+{% load static %}
+{% block title%} Commercial Realestate For Sale  {% endblock title %}
+{% block content %}
+
+<main id="main" >
+
+  <section class="breadcrumbs">
+    <div class="container mt-2">
+
+      <ol>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li>Realestate</li>
+      </ol>
+      <h2>Commercial Realestate</h2>
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <!-- ======= Blog Section ======= -->
+  <section id="blog" class="blog">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+
+        {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error : {{ message }}
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    Success : {{ message }}
+                {% else %}
+                    {{ message.tags | title }}
+                {% endif %}
+                {{ message. }}
+            </strong>
+            </div>
+                
+            {% endfor %}
+        {% endif %}
+
+        <header class="section-header">
+          <p>Find Your Next Investment Opportunity</p>
+        </header>
+        
+
+        <div class="col-lg-4">
+
+          <div class="sidebar">
+
+            <h3 class="sidebar-title">Search</h3>
+            <div class="sidebar-item search-form">
+              <form action="{% url 'realestate' %}">
+                <input type="text" name="query">
+                <button type="submit"><i class="bi bi-search"></i></button>
+              </form>
+            </div><!-- End sidebar search formn-->
+            <div class="flex" style="justify-content: space-between">
+            <div class="sidebar-item categories dropdown "><a href="#"><span class="sidebar-title"> <i class="bi bi-folder"></i> Categories</span> <i class="bi bi-chevron-down"></i></a>
+              <ul>
+                {%for category in categories %}
+                <li id = "category"><a href="{% url 'realestate' %}?query={{ query }}&category={{category.id}}">{{category.name}} <span>({{category.commercialRealEState_set.count}})</span></a></li>
+                {%endfor%}
+              </ul>
+            </div>
+          <!-- End sidebar categories-->
+            </div>
+          </div><!-- End sidebar -->
+
+        </div><!-- End blog sidebar -->
+
+        <div class="col-lg-8 entries">
+          {% for realestate in realestates %}
+          <article class="entry">
+            
+            <div class="entry-img">
+              <img src="{{ realestate.imageURL}}" alt="" class="img-fluid">
+            </div>
+
+            <h2 class="entry-title">
+              <a href="{% url 'realestate_single' realestate.id %}">{{realestate.title}}</a>
+            </h2>
+            <div class="entry-meta">
+              <span class="post-date">{{realestate.locationn}}, {{realestate.county}}-{{realestate.country}}</span>
+            </div>
+
+            <hr>
+            <p>Asking Price : <strong>ksh{{realestate.asking_price}}</strong></p>
+            <p>Average Monthly Rental Income: <strong>ksh{{realestate.average_montly_rental_income}}</strong></p>
+            <p>Listed By : <strong>{{realestate.listed_by.full_name}}</strong></p>
+            <hr>
+            <p>Total Rooms : {{realestate.total_rooms}}</p> 
+            <p>Total Occupied Rooms: {{realestate.current_occupied_rooms}}</p>
+            <hr>
+
+            <div class="entry-content">
+              <h6>
+                    <strong>
+                      Property Description
+                    </strong>
+                </h6>
+                <div>
+                {{realestate.property_description|truncatechars:255}}
+                </div>
+              <div class="entry-footer">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  
+                  <li><a href="{% url 'realestate' %}?query={{ query }}&category={{realestate.category.id}}" title="category">{{realestate.category.name}}</a></li>
+                  
+                </ul>
+              </div>
+              <div class="read-more">
+                <a href="{% url 'realestate_single' realestate.id %}">Find Out More</a>
+              </div>
+            </div>
+          
+          </article><!-- End blog entry -->
+          {% endfor %}
+
+          <!-- paginator -->
+          <div class="row">
+            <div class="col-md-12 ">
+              {% if realestates.has_other_pages %}
+                <ul class="pagination justify-content-center blog-pagination">
+                  {% if realestates.has_previous %}
+                    <a href="?page={{realestates.previous_page_number}}" class="page-link">&laquo;</a>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link">&laquo;</a>
+                    </li>
+                  {% endif %}
+                  {% for i in realestates.paginator.page_range %}
+                    {% if realestates.number == i %}
+                      <li class="page-item active">
+                        <a class="page-link">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a href="?page={{i}}" class="page-link">{{ i }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                  {% if realestates.has_next %}
+                    <a href="?page={{ realestates.next_page_number }}" class="page-link">&raquo;</a>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link">&raquo;</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
+
+        </div><!-- End blog entries list -->
+
+      </div>
+
+    </div>
+  </section><!-- End Blog Section -->
+
+</main><!-- End #main -->
+
+{% endblock %}

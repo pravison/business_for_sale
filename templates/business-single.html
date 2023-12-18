@@ -1,0 +1,223 @@
+
+{% extends 'main.html' %}
+{% load static %}
+{% block title %} Business Single {% endblock title %}
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container mt-2">
+
+        <ol>
+          <li><a href="{% url 'homepage' %}">Home</a></li>
+          <li><a href="{% url 'biz' %}">Businesses</a></li>
+          {% if request.user.id == biz.listed_by.id %}
+          <li><a href="{% url 'edit_business' biz.id %}">Edit</a></li>
+          {% endif %}
+        </ol>
+        <h2>Business Single</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Business  Single Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error : {{ message }}
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    Success : {{ message }}
+                {% else %}
+                    {{ message.tags | title }}
+                {% endif %}
+                {{ message. }}
+            </strong>
+            </div>
+                
+            {% endfor %}
+          {% endif %}
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+
+              <div class="entry-img">
+                <img src="{{biz.imageURL}}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                {{biz.title}}
+              </h2>
+              <p>{{biz.location}}, {{biz.county}}-{{biz.country}}
+              <hr>
+              <p>Business Name: <strong>{{biz.business_name}}</strong></p>
+              <p>Business Owner: <strong>{{biz.business_owner}}</strong></p>
+              <p>Industry: <strong>{{biz.industry}}</strong></p>
+              <hr>
+              <p>Asking Price:   ksh<strong>{{biz.asking_price}}</strong></p>
+              <p>Cash Flow:   ksh<strong>{{biz.cashflow}}</strong></p>
+              <p>Gross Annual Revenue:   ksh<strong>{{biz.gross_annual_revenue}}</strong></p>
+              <p>EBITDA (profits):   ksh<strong>{{biz.profits}}</strong></p>
+              <hr>
+
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Business Description
+                    </strong>
+                </h6>
+                <div>
+                {{biz.description}}
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                
+                <h6>
+                    <strong>
+                        Detailed Information
+                    </strong> 
+                </h6>
+                <div>
+                <p>
+                    Location:<br>{{biz.address}}, {{biz.location}}, {{biz.county}}-{{biz.country}}
+                </p>
+                <p>
+                    Real Estate: <br>{{biz.realestate}}
+                </p>
+                <p>
+                    Lease Expiration: <br>{{biz.lease_expiration}}
+                </p>
+                <p>
+                    No. Of Employees : <br>{{biz.number_of_employes}}
+                </p>
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Inventory
+                    </strong>
+                </h6>
+                <div>
+                {{biz.inventory}}
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Competition
+                    </strong>
+                </h6>
+                <div>
+                {{biz.competion}}
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Support And Training
+                    </strong>
+                </h6>
+                <div>
+                {{biz.support_and_training}}
+                </div>
+
+              </div>
+
+              <div class="entry-footer">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  
+                  <li><a href="{% url 'biz' %}?query={{ query }}&category={{biz.category.id}}" title="category">{{biz.category.name}}</a></li>
+                  
+                </ul>
+              </div>
+
+            </article>
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="col-lg-12 mb-2">
+                <h6>Reach Out !!!</h6>
+                <hr>
+                <p> business listed by : {{biz.listed_by.full_name}} - {{biz.listed_by.are_you}} <span><a href="tel:{{biz.listed_by.phone}}"><br><i class="ri-phone-line"></i> call</a></span>
+                <hr>
+                <form action="{% url 'contact' %}" method="POST" >
+                  {% csrf_token %}
+                  <div class="row gy-6">
+    
+                    <div class="col-md-6 mb-1">
+                      <input type="text" name="full_name" class="form-control" value="{{user.full_name}}" required>
+                    </div>
+    
+                    <div class="col-md-6 mb-1">
+                      <input type="text"  class="form-control" name="phone_number"  placeholder="Phone Number" value="{{user.phone}}">
+                    </div>
+    
+                    <div class="col-md-12 mb-1">
+                      <input type="email" class="form-control" name="email" placeholder="Your Email" value="{{user.email}}">
+                    </div>
+    
+                    <div class="col-md-12 mb-1">
+                      <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                    </div>
+
+                    <div class="col-md-12 mb-1 visually-hidden">
+                     <input type="text" class="form-control" name="target_user" placeholder="target user" value="{{biz.listed_by.id}}">
+                    </div>
+                    <div class="col-md-12 mb-1 visually-hidden">
+                        <input type="text" class="form-control" name="business_intrested_in" placeholder="business intrested in" value="{{biz.id}}">
+                    </div>
+    
+                    <div class="col-md-12 text-center">
+                      <input type="submit" class="btn btn-primary" value="Send Message">
+                    </div>
+    
+                  </div>
+                </form>
+    
+            </div>
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Related Businesses</h3>
+              <div class="sidebar-item recent-posts">
+                {% for biz in relatedBiz %}
+                <div class="post-item clearfix">
+                  <img src="{{biz.imageURL}}" alt="">
+                  <h4><a href="{% url 'biz_single' biz.id %}">{{biz.title}}</a></h4>
+                  <h4>Asking Price:   ksh<strong>{{biz.asking_price}}</strong></h4>
+                </div>
+                {% endfor %}
+
+              </div><!-- End sidebar recent posts-->
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End biz Single Section -->
+
+  </main><!-- End #main -->
+  
+
+ {% endblock %}

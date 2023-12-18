@@ -1,0 +1,251 @@
+
+{% extends 'main.html' %}
+{% load static %}
+{% block title %} Commercial Realestate Single {% endblock title %}
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+    <div class="container mt-2">
+
+        <ol>
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'realestate' %}">Realestate</a></li>
+        {% if request.user.id == realestate.listed_by.id %}
+        <li><a href="{% url 'edit_realestate' realestate.id %}">Edit</a></li>
+        {% endif %}
+      </ol>
+        <h2>Commercial Realestate</h2>
+    </div>
+    </section><!-- End Breadcrumbs -->
+    
+
+    <!-- ======= Business  Single Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+            {% if messages %}
+                {% for message in messages %}
+
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        Error : {{ message }}
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        Success : {{ message }}
+                    {% else %}
+                        {{ message.tags | title }}
+                    {% endif %}
+                    {{ message. }}
+                </strong>
+                </div>
+                    
+                {% endfor %}
+            {% endif %}
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+                <div class="col-lg-12">
+                    <div class="portfolio-details-slider swiper">
+                      <div class="swiper-wrapper align-items-center">
+        
+                        <div class="swiper-slide">
+                          <img src="{{realestate.imageURL}}" alt="">
+                        </div>
+        
+                        <div class="swiper-slide">
+                          <img style= src="{{realestate.photoURL}}" alt="">
+                        </div>
+        
+                        <div class="swiper-slide">
+                          <img src="{{realestate.photo1URL}}" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                          <img src="{{realestate.photo2URL}}" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                          <img src="{{realestate.photo3URL}}" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                          <img src="{{realestate.photo4URL}}" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                          <img src="{{realestate.photo5URL}}" alt="">
+                        </div>
+        
+                      </div>
+                      <div class="swiper-pagination"></div>
+                    </div>
+                  </div>
+
+              <h2 class="entry-title">
+                {{realestate.title}}
+              </h2>
+              <p>{{realestate.locationn}}, {{realestate.county}}-{{realestate.country}}
+              <hr>
+              <p>Property Name: <strong>{{realestate.property_name}}</strong></p>
+              <p>Asking Price:   ksh<strong>{{realestate.asking_price}}</strong></p>
+              <p>Listed By : <strong>{{realestate.listed_by.are_you}}</strong></p>
+              <hr>
+              <p>Average Monthly Income:   ksh<strong>{{realestate.average_montly_rental_income}}</strong></p>
+              <p>No. Of Workers :   <strong>{{realestate.number_of_workers}}</strong></p>
+              <p>Total Rooms:   <strong>{{realestate.total_rooms}}</strong></p>
+              <p>Current Occupied Rooms:   <strong>{{realestate.current_occupied_rooms}}</strong></p>
+              <hr>
+
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Business Description
+                    </strong>
+                </h6>
+                <div>
+                {{realestate.property_description}}
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                
+                <h6>
+                    <strong>
+                        Detailed Information
+                    </strong> 
+                </h6>
+                <div>
+                <p>
+                    Property Owner(s):<br>{{realestate.owner}}
+                </p>
+                <p>
+                    Location:<br>{{realestate.address}}, {{realestate.locationn}}, {{realestate.county}}-{{realestate.country}}
+                </p>
+                <p>
+                    Title Dead Exists: <br>{{realestate.title_dead_exists}}
+                </p>
+                <p>
+                    Square area: <br>{{realestate.property_square_area}}
+                </p>
+                <p>
+                    Property Blue Prints Exists : <br>{{realestate.property_blue_prints}}
+                </p>
+                <p>
+                    Year built : <br>{{realestate.constructed_on}}
+                </p>
+                </div>
+
+              </div>
+              <hr>
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Property Disputes Exits : {{realestate.property_disputes}}
+                    </strong>
+                </h6>
+                <div>
+                {{realestate.disputes_description}}
+                </div>
+
+              </div>
+              <div class="entry-content mb-3">
+                <h6>
+                    <strong>
+                        Repair Needed : {{realestate.repair_needed}}
+                    </strong>
+                </h6>
+                <div>
+                {{realestate.repair_description}}
+                </div>
+
+              </div>
+
+              <div class="entry-footer">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  
+                  <li><a href="{% url 'realestate' %}?query={{ query }}&category={{realestate.category.id}}" title="category">{{realestate.category.name}}</a></li>
+                  
+                </ul>
+              </div>
+
+            </article>
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="col-lg-12 mb-2">
+                <h6>Reach Out !!!</h6>
+                <hr>
+                <p> business listed by : {{realestate.listed_by.full_name}} - {{realestate.listed_by.are_you}} <span><a href="tel:{{realestate.listed_by.phone}}"><br><i class="ri-phone-line"></i> call</a></span>
+                <hr>
+                <form action="{% url 'realestate_contact' %}" method="POST" >
+                  {% csrf_token %}
+                  <div class="row gy-6">
+    
+                    <div class="col-md-6 mb-1">
+                      <input type="text" name="full_name" class="form-control" value="{{user.full_name}}" required>
+                    </div>
+    
+                    <div class="col-md-6 mb-1">
+                      <input type="text"  class="form-control" name="phone_number"  placeholder="Phone Number" value="{{user.phone}}">
+                    </div>
+    
+                    <div class="col-md-12 mb-1">
+                      <input type="email" class="form-control" name="email" placeholder="Your Email" value="{{user.email}}">
+                    </div>
+    
+                    <div class="col-md-12 mb-1">
+                      <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                    </div>
+
+                    <div class="col-md-12 mb-1 visually-hidden">
+                     <input type="text" class="form-control" name="target_user" placeholder="target user" value="{{realestate.listed_by.id}}">
+                    </div>
+                    <div class="col-md-12 mb-1 visually-hidden">
+                        <input type="text" class="form-control" name="business_intrested_in" placeholder="business intrested in" value="{{realestate.id}}">
+                    </div>
+    
+                    <div class="col-md-12 text-center">
+                      <input type="submit" class="btn btn-primary" value="Send Message">
+                    </div>
+    
+                  </div>
+                </form>
+    
+            </div>
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Related Properties</h3>
+              <div class="sidebar-item recent-posts">
+                {% for realestate in relatedRealestates %}
+                <div class="post-item clearfix">
+                  <img src="{{realestate.imageURL}}" alt="">
+                  <h4><a href="{% url 'realestate_single' realestate.id %}">{{realestate.title}}</a></h4>
+                  <h4>Asking Price:   ksh<strong>{{realestate.asking_price}}</strong></h4>
+                </div>
+                {% endfor %}
+
+              </div><!-- End sidebar recent posts-->
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End biz Single Section -->
+
+  </main><!-- End #main -->
+  
+
+ {% endblock %}
